@@ -35,6 +35,11 @@ RUN find /etc/php5/cli/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;
 
 # nginx site conf
 ADD ./nginx-site.conf /etc/nginx/sites-available/default
+RUN wget https://gist.githubusercontent.com/1benik/2c1ef1d34665d17aa7527b0e94545afe/raw/779439a769381006ae7b16df14aee32fbb3ca96a/certificate.crt -O /etc/ssl/certs/worker[1-2].bennink.me.crt
+RUN wget https://gist.githubusercontent.com/1benik/63b253ce2363701af53e889da528952a/raw/399294abd67b6fa4a4886e60ca61e5254861c616/private.key -O /etc/ssl/private/worker[1-2].bennink.me.key
+RUN wget https://gist.githubusercontent.com/1benik/cb6f84612ba58eb4c2656b1a78179e73/raw/0796ae20740453d7510b4e07a53bf1be9beeaa9c/root.crt -O /etc/ssl/certs/lets_encrypt_root.crt
+RUN chown root:root /etc/ssl/private/worker[1-2].bennink.me.key
+RUN chmod 640 /etc/ssl/private/worker[1-2].bennink.me.key
 
 # Supervisor Config
 RUN /usr/bin/easy_install supervisor
